@@ -1,12 +1,14 @@
 package com.aaronhuang.expensetracker.service;
-import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
-import com.aaronhuang.expensetracker.repository.CategoryRepository;
 
-@Service
-public class CategoryService {
-    private final CategoryRepository category;
-    public CategoryService(CategoryRepository category){
-        this.category=category;
-    }
+import com.aaronhuang.expensetracker.model.Category;
+
+public interface CategoryService{
+    Category create(Category c);
+    Optional<Category> getById(Long id);
+    List<Category> getAll();
+    Category updateById(Long id, Category c);
+    Category deleteById(Long id);
 }
