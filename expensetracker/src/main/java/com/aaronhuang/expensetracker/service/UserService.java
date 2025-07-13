@@ -1,10 +1,14 @@
 package com.aaronhuang.expensetracker.service;
 
-import org.springframework.stereotype.Service;
+import java.util.Optional;
+import java.util.List;
 
-import com.aaronhuang.expensetracker.repository.UserRepository;
+import com.aaronhuang.expensetracker.model.User;
 
-@Service
-public class UserService {
-    private final UserRepository userRepo;
+public interface UserService {
+    User create(User u);
+    Optional<User> getById(Long id);
+    List<User> getAll();
+    User updateById(Long id, User u);
+    User deleteById(Long id);
 }

@@ -1,9 +1,14 @@
 package com.aaronhuang.expensetracker.service;
-import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
-import com.aaronhuang.expensetracker.repository.ExpenseRepository;
+import com.aaronhuang.expensetracker.model.Expense;
 
-@Service
-public class ExpenseService {
-    private final ExpenseRepository expenseRepo;
+
+public interface ExpenseService {
+    Expense create(Expense e);
+    Optional<Expense> getById(Long id);
+    List<Expense> getAll();
+    Expense updateById(Long id, Expense e);
+    Expense deleteById(Long id);
 }
