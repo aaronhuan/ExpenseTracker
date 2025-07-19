@@ -2,6 +2,8 @@ package com.aaronhuang.expensetracker.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -95,11 +97,36 @@ public class Expense {
     }
 
     public String toString(){
-        return String.format("Expense[%d: %s %s %s]",
+        return String.format("Expense[%s: %s %s %s]",
             id, date, amount.toPlainString(), description);
     }
-}
 
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true; // compare the reference in memory
+        if(!(o instanceof Expense)) return false; //find out if the class is the same
+        Expense that = (Expense) o; //cast it from o to expense
+        if(id != null && that.getId() !=null){//check for null in primary key (id)
+            return id.equals(that.getId()); //compare id
+        }
+        return Objects.equals(date, that.getDate()) && 
+            Objects.equals(amount,that.getAmount()) &&
+            Objects.equals(user!= null ? user.getId():null, that.user!=null? that.user.getId(): null) &&
+            Objects.equals(category!=null ? category.getId():null, that.category!=null ? that.category.getId(): null)&&
+            Objects.equals(currency != null ? currency : null, that.currency != null ? that.getCurrency() : null) &&
+            Objects.equals(description, that.getDescription());
+            //else compare all fields
+    }
+
+    @Override 
+    public int hashCode(){
+        return (id != null 
+        ? id.hashCode()
+        : Objects.hash(date, amount, currency, description,
+        user != null ? user.getId():null,
+         category != null ? category.getId():null));
+    }
+}
 
 
 

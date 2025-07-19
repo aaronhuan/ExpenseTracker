@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.aaronhuang.expensetracker.model.Expense;
-import com.aaronhuang.expensetracker.model.User;
-import com.aaronhuang.expensetracker.model.Category;
 
 import com.aaronhuang.expensetracker.repository.ExpenseRepository;
 
@@ -37,17 +35,17 @@ public class ExpenseServiceImpl implements ExpenseService{
     }
 
     @Override
-    public Expense updateById(Long id, Expense u){
+    public Expense updateById(Long id, Expense e){
         Expense existing = getById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                                                             "Expense not Found: " + id));
-        existing.setUser(u.getUser());
-        existing.setAmount(u.getAmount());
-        existing.setCategory(u.getCategory());
-        existing.setCurrency(u.getCurrency());
-        existing.setDescription(u.getDescription());
+        existing.setUser(e.getUser());
+        existing.setAmount(e.getAmount());
+        existing.setCategory(e.getCategory());
+        existing.setCurrency(e.getCurrency());
+        existing.setDescription(e.getDescription());
 
-        return existing;
+        return repo.save(existing);
     }
 
     @Override

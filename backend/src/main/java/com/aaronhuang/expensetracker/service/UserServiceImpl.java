@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService{
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                                                             "User not Found: " + id));
         existing.setName(u.getName());
-        return existing;
+        return repo.save(existing);
     }
 
     @Override

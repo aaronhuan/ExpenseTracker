@@ -1,0 +1,76 @@
+# ┌───────────────┐
+# │ OS / Editor   │
+# └───────────────┘
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+# keep workspace extensions list if you want:
+!.vscode/extensions.json
+
+# IntelliJ / IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Visual Studio
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ┌───────────────┐
+# │ Logs          │
+# └───────────────┘
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ┌───────────────┐
+# │ Node / Frontend
+# └───────────────┘
+# ignore dependencies & builds anywhere under project
+**/node_modules/
+**/dist/
+**/dist-ssr/
+
+# ┌───────────────┐
+# │ Java / Backend
+# └───────────────┘
+# Maven/Gradle build outputs
+**/target/
+**/build/
+
+# compiled classes
+**/*.class
+
+# Maven wrapper JAR
+.mvn/wrapper/maven-wrapper.jar
+
+# STS (SpringToolSuite)
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache
+
+# Eclipse / generic Java IDE
+.classpath
+.project
+.settings/
+
+# NetBeans
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# ┌───────────────┐
+# │ Extras you might add
+# └───────────────┘
+# coverage reports, IDE backups, etc.
+coverage/
+*.seed

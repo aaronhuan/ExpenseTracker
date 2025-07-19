@@ -4,8 +4,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="users",
-uniqueConstraints = @UniqueConstraint(columnNames= "email")) //prevent dupe emails
+@Table(name="users")
 public class User {
 
     @Id
@@ -14,7 +13,7 @@ public class User {
 
     @Column(nullable=false)
     private String name;
-    @Column(nullable=false)
+    @Column(nullable=false, unique=true)
     private String email;
     @Column(nullable=false, updatable=false)
     private LocalDateTime createdAt;
@@ -75,6 +74,23 @@ public class User {
 
     @Override
     public String toString(){
-        return String.format("User[%d:%s <%s>]", id,name,email);
+        return String.format("User[%s:%s <%s>]", id,name,email);
     }
+
+    @Override 
+    public boolean equals(Object o){
+        if(this==o) return true;
+        if(!(o instanceof User)) return false;
+        User that = (User) o;
+        if(id != null && that.id != null){
+            return id.equals(that.id);
+        }
+        return email.equals(that.email);
+    }
+
+    @Override
+    public int hashCode (){
+        return (id != null ? id.hashCode() : email.hashCode());
+    }
+
 }
