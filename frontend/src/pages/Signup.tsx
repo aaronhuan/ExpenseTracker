@@ -28,11 +28,12 @@ export default function Login(){
                     <input type="email" placeholder="Enter your email" required/>
 
                     <label>Password</label>
-                    <input type="password" placeholder="Enter your password" required/>
-                    <p>Forgot password?</p>
+                    <input type="password" placeholder="Create a password" required/>
+                    <label>Confirm Password</label>
+                    <input type="password" placeholder="Confirm your password" required/>
                     <button>Submit</button>
                 </Styledform>
-                <p>Don't have an account? signup</p>
+                <p>Already have an account? Login</p>
             </Styledmain>
             
         </>
