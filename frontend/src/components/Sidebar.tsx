@@ -6,8 +6,9 @@ const StyedColumn = styled.div`
     display:flex;
     padding:100px;
     flex-direction: column;
-    border:solid 1px black;
-    margin:0+10vw+0+1vw;
+    margin:0+10px+0+0px;
+    background:white;
+    border-radius:0+10px+10px+0;
 `;
 
 const StyledUser= styled.div`
@@ -49,11 +50,10 @@ export default function Sidebar(){
                 <p>user</p>
             </StyledUser>
             <StyledUL>
-                <StyledLI><StyledLink to={'/'}>Home</StyledLink></StyledLI>
-                <StyledLI><StyledLink to={'/login'}>login</StyledLink></StyledLI>
-                <StyledLI><StyledLink to={'/signup'}>Signup</StyledLink></StyledLI>
+                <StyledLI><StyledLink to={'/'}>Dashboard</StyledLink></StyledLI>
+                <StyledLI><StyledLink to={'/login'}>Transactions</StyledLink></StyledLI>
+                <StyledLI><StyledLink to={'/signup'}>Incomes</StyledLink></StyledLI>
                 <StyledLI><StyledLink to={'/expenses'}>Expenses</StyledLink></StyledLI>
-                <StyledLI><StyledLink to={'/categories'}>Categories</StyledLink></StyledLI>
             </StyledUL>
         </StyedColumn>
     );
