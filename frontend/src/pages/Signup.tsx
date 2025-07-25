@@ -22,7 +22,7 @@ export default function Login(){
         <>
             <Navbar/>
             <Styledmain>
-                <h3>Login in</h3>
+                <h3>Sign up</h3>
                 <Styledform>
                     <label>Email</label>
                     <input type="email" placeholder="Enter your email" required/>

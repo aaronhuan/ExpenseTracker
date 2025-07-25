@@ -8,7 +8,6 @@ const StyedColumn = styled.div`
     flex-direction: column;
     margin:0+10px+0+0px;
     background:white;
-    border-radius:0+10px+10px+0;
 `;
 
 const StyledUser= styled.div`
