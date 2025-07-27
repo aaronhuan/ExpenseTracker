@@ -49,9 +49,9 @@ export default function Sidebar(){
                 <p>user</p>
             </StyledUser>
             <StyledUL>
-                <StyledLI><StyledLink to={'/'}>Dashboard</StyledLink></StyledLI>
-                <StyledLI><StyledLink to={'/login'}>Transactions</StyledLink></StyledLI>
-                <StyledLI><StyledLink to={'/signup'}>Incomes</StyledLink></StyledLI>
+                <StyledLI><StyledLink to={'/dashboard'}>Dashboard</StyledLink></StyledLI>
+                <StyledLI><StyledLink to={'/transactions'}>Transactions</StyledLink></StyledLI>
+                <StyledLI><StyledLink to={'/incomes'}>Incomes</StyledLink></StyledLI>
                 <StyledLI><StyledLink to={'/expenses'}>Expenses</StyledLink></StyledLI>
             </StyledUL>
         </StyedColumn>

@@ -3,8 +3,10 @@ import Home from "./pages/Home";
 import { createBrowserRouter, Route, Routes, RouterProvider, useLocation} from "react-router-dom";
 import Login from "./pages/Login";
 import Expenses from "./pages/Expenses";
-import Categories from "./pages/Transactions";
 import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
+import Transactions from "./pages/Transactions";
+import Incomes from "./pages/Incomes";
 
 function Root(){
   const location = useLocation();
@@ -22,8 +24,10 @@ function Root(){
         <Route path={'/*'} element = {<Home/>}/>
         <Route path={'/login'} element = {<Login/>}/>
         <Route path={'/signup'} element = {<Signup/>}/>
+        <Route path={'dashboard'} element={<Dashboard/>}/>
         <Route path={'/expenses'} element={<Expenses/>}/>
-        <Route path={'/categories'} element= {<Categories/>}/>
+        <Route path={'/incomes'} element={<Incomes/>}/>
+        <Route path={'/transactions'} element= {<Transactions/>}/>
         {/* Route... */}
       </Routes>
     </>

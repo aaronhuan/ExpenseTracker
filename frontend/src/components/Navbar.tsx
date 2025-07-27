@@ -38,8 +38,7 @@ export default function Navbar(){
                 <StyledLI><StyledLink to={'/'}>Home</StyledLink></StyledLI>
                 <StyledLI><StyledLink to={'/login'}>login</StyledLink></StyledLI>
                 <StyledLI><StyledLink to={'/signup'}>Signup</StyledLink></StyledLI>
-                <StyledLI><StyledLink to={'/expenses'}>Expenses</StyledLink></StyledLI>
-                <StyledLI><StyledLink to={'/categories'}>Categories</StyledLink></StyledLI>
+                <StyledLI><StyledLink to={'/dashboard'}>Dashboard</StyledLink></StyledLI>
             </StyledUL>
         </StyledBigDiv>
     );

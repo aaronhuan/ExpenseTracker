@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Styledmain=styled.main`
     display:flex;
@@ -34,7 +35,7 @@ export default function Login(){
                 </Styledform>
                 <p>Don't have an account? signup</p>
             </Styledmain>
-            
+            <Footer/> 
         </>
     )
 }

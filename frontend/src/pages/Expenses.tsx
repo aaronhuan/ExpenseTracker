@@ -1,95 +1,176 @@
-import Navbar from "../components/Navbar";
 import styled from "styled-components";
+import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import { useState } from "react";
+import Footer from "../components/Footer";
 
-const StyledBody = styled.main`
-  display: flex;
-  padding: 10px+0px+10px+0px;;
-  background: lightblue;
-  height: 100vh;
+const Page = styled.div`
+    display: flex;
+    height: 100vh;
+    background: #e0f2fe;
 `;
 
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;             /* take all the space beside sidebar */
-  gap: 1rem;
+const Main = styled.main`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    overflow: auto;
 `;
 
-const Content = styled.div`
-  display: flex;
-  flex: 1;             /* fill up available vertical space above footer */
-  gap: 1rem;
+const TopSection =styled.div`
+    display:flex;
+    gap:2rem;
+    margin-bottom:2rem;
 `;
 
-const GraphContainer = styled.div`
-  flex: 5; 
-  background: white;
-  border: 1px solid black;
-  border-radius: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;   /* tweak this to taste */
+const GraphContainer=styled.div`
+    flex: 3;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background: white;
+    border-radius: 0.5rem;
 `;
 
-const WidgetColumn = styled.div`
-  flex: 4;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+const CategoryContainer=styled.div`
+    flex:2;
+    padding: 2rem;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+    background: white;
+    border-radius:0.5rem;
+    display: flex;
+    flex-wrap: wrap;
 `;
 
-const Widget = styled.div`
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border-left: 6px solid ${(p) => p.color || "#64748b"};
-  min-height: 120px;   /* make them a bit taller */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const Chip = styled.div`
+background: lightblue;
+border-radius:0.5rem;
+display:flex;
+padding-left:4px;
+padding-right:4px;
 `;
 
-const TransContainer = styled.div`
-  display:flex;
+const HeaderRow = styled.div`
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 1rem 0;
 `;
 
-export default function Expenses() {
-  return (
+const Title = styled.h2`
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+`;
+
+const AddButton = styled.button`
+    padding: 0.5rem 1.25rem;
+    background: #0284c7;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        background: #0369a1;
+    }
+`;
+
+
+
+const TransactionTable = styled.table`
+    background:white;
+    border-radius:0.5rem;
+    width:100%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+    border-collapse: collapse;
+`;
+
+const StyledTH = styled.th`
+    text-align: left;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+`;
+
+const StyledTHEditDelete = styled.th`
+    text-align:left;
+    font-size:1rem;
+    padding:0.2rem 0.5rem;
+`;
+
+const StyledTD = styled.td`
+    text-align:left;
+    font-size:1rem;
+    padding:0.5rem 1rem;
+`;
+
+const StyledTR = styled.tr`
+    background-color: ${(props)=>(props.index %2 ===0 ? '#ffffff' : '#f0f0f0e6')}; 
+`;
+
+export default function Expenses(){
+    const [alter, setAlter]= useState(0);
+    const categories = ['Groceries','Rent','Utilities'];
+    return(
     <>
-      <Navbar />
-      <StyledBody>
-        <Sidebar />
-        <ContentWrapper>
-          <Content>
-            <GraphContainer>
-              <p>graph</p>
-            </GraphContainer>
+        <Navbar/>
+        <Page>
+            <Sidebar/>
+            <Main>
+                <TopSection>
+                    <GraphContainer>
+                        {/* insert piegraph */}
+                        <p>graph</p>
+                    </GraphContainer>
+                    <div>
+                        <p>Categories</p>
+                        <CategoryContainer>
+                        {categories.map(cate=>
+                            <Chip>{cate}</Chip>
+                        )}
+                        </CategoryContainer>
+                    </div>
+                </TopSection>
+                <HeaderRow>
+                    <AddButton>Add Expenses</AddButton>
+                    <Title>Recent Expenses</Title>
+                </HeaderRow>
 
-            <WidgetColumn>
-                <div>
-                    <p>income</p>
-                    <Widget color="green">$123</Widget>
-                </div>
-                <div>
-                    <p>Expenses</p>
-                    <Widget color="red">$111</Widget>
-                </div>
-                <div>
-                    <p>Balance</p>
-                    <Widget color="blue">$income - expenses</Widget>
-                </div>
-            </WidgetColumn>
-          </Content>
-
-          <TransContainer>
-            <Widget style={{ flex: 2 }}>add txn</Widget>
-            <Widget style={{ flex: 3 }}>recent txn</Widget>
-          </TransContainer>
-        </ContentWrapper>
-      </StyledBody>
+                <TransactionTable>
+                    <tr>
+                        <StyledTH>Date</StyledTH>
+                        <StyledTH>Category</StyledTH>
+                        <StyledTH>Amount</StyledTH>
+                        <StyledTH>Description</StyledTH>
+                        <StyledTHEditDelete>Edit</StyledTHEditDelete>
+                        <StyledTHEditDelete>Del</StyledTHEditDelete>
+                    </tr>
+                    <StyledTR>
+                        <StyledTD>01/1/1</StyledTD>
+                        <StyledTD>Groceries</StyledTD>
+                        <StyledTD>$10000</StyledTD>
+                        <StyledTD>meat</StyledTD>
+                        <StyledTD>edit icon</StyledTD>
+                        <StyledTD>x</StyledTD>
+                    </StyledTR>
+                    <tr>
+                        <StyledTD>01/1/1</StyledTD>
+                        <StyledTD>Groceries</StyledTD>
+                        <StyledTD>$10000</StyledTD>
+                        <StyledTD>meat</StyledTD>
+                        <StyledTD>edit icon</StyledTD>
+                        <StyledTD>x</StyledTD>
+                    </tr>
+                </TransactionTable>
+            </Main>
+        </Page>
+        <Footer/>
     </>
-  );
+    )
 }
