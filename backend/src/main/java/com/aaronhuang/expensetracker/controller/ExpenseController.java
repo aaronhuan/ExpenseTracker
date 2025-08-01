@@ -38,13 +38,13 @@ public class ExpenseController {
         return ResponseEntity.ok(eSvc.getAll());
     }
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<Expense> createExpense(@RequestBody Expense e){
         Expense created = eSvc.create(e);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Expense> updateExpense(@PathVariable Long id,@RequestBody Expense e){
         Expense updated = eSvc.updateById(id, e);
         return ResponseEntity.ok(updated);

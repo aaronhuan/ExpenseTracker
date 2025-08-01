@@ -24,6 +24,7 @@ public class ExpenseServiceImpl implements ExpenseService{
         return repo.save(e);
     }
 
+
     @Override
     public Optional<Expense> getById(Long id){
         return repo.findById(id);
@@ -42,7 +43,6 @@ public class ExpenseServiceImpl implements ExpenseService{
         existing.setUser(e.getUser());
         existing.setAmount(e.getAmount());
         existing.setCategory(e.getCategory());
-        existing.setCurrency(e.getCurrency());
         existing.setDescription(e.getDescription());
 
         return repo.save(existing);

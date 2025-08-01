@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name="expenses")
@@ -27,10 +28,10 @@ public class Expense {
     @Column(nullable=false)
     private String description="";
 
+    @Min(value = 0, message = "Amount must be a positive number")
     @Column(nullable=false)
     private BigDecimal amount= BigDecimal.ZERO;
 
-    private String currency="USD";
 
     public Expense(){}
 
@@ -88,14 +89,6 @@ public class Expense {
         this.amount=amount;
     }
 
-    public String getCurrency(){
-        return currency;
-    }
-
-    public void setCurrency(String currency){
-        this.currency=currency;
-    }
-
     public String toString(){
         return String.format("Expense[%s: %s %s %s]",
             id, date, amount.toPlainString(), description);
@@ -113,7 +106,6 @@ public class Expense {
             Objects.equals(amount,that.getAmount()) &&
             Objects.equals(user!= null ? user.getId():null, that.user!=null? that.user.getId(): null) &&
             Objects.equals(category!=null ? category.getId():null, that.category!=null ? that.category.getId(): null)&&
-            Objects.equals(currency != null ? currency : null, that.currency != null ? that.getCurrency() : null) &&
             Objects.equals(description, that.getDescription());
             //else compare all fields
     }
@@ -122,7 +114,7 @@ public class Expense {
     public int hashCode(){
         return (id != null 
         ? id.hashCode()
-        : Objects.hash(date, amount, currency, description,
+        : Objects.hash(date, amount, description,
         user != null ? user.getId():null,
          category != null ? category.getId():null));
     }

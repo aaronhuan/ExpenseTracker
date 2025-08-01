@@ -3,11 +3,18 @@ package com.aaronhuang.expensetracker.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="categories")
+@Table(
+    name = "categories",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"name", "user_id"})// unique per user
+)
 public class Category {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -17,22 +24,34 @@ public class Category {
 
     public Category(){} // JPA needs a no-arg constructor to build the object
 
-    public Category(String name, boolean builtIn){
+    public Category(String name, boolean builtIn, User user){
         this.name=name;
         this.builtIn=builtIn;
+        this.user=user;
     }
 
     //getter and setters 
     public Long getId(){
         return id;
     }
+    public User getUser(){
+        return user;
+    }
+
+    public void setUser(User user){
+        this.user=user;
+    }
+
     //no setId, automated
     public String getName(){
         return name;
     }
 
     public void setName(String name){
-        this.name=name;
+        if(!this.builtIn){// Only allow updates for user-created categories
+            this.name=name;
+        }
+
     }
     // no set category, this is built in categories
 
