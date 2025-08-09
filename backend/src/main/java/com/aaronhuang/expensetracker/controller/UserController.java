@@ -59,4 +59,16 @@ public class UserController {
         return ResponseEntity.ok(deleted);
     }
     
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody LoginRequest loginRequest) {
+        User user = uSvc.findByEmail(loginRequest.getEmail());
+        if (user == null || !passwordEncoder().matches(loginRequest.getPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String token = jwtTokenUtil.generateToken(user);
+        response.put("user", user);
+        response.put("token", token);
+
+        return ResponseEntity.ok(response);
 }
