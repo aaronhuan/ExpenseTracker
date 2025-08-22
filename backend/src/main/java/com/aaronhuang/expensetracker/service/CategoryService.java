@@ -6,9 +6,9 @@ import java.util.Optional;
 import com.aaronhuang.expensetracker.model.Category;
 
 public interface CategoryService{
-    Category create(Category c);
-    Optional<Category> getById(Long id);
-    List<Category> getAll();
-    Category updateById(Long id, Category c);
-    Category deleteById(Long id);
+    Category create(Category c, String authHeader);
+    Optional<Category> getById(Long id, String authHeader);
+    List<Category> getAll(String authHeader);
+    Category updateById(Long id, Category c, String authHeader);
+    Category deleteById(Long id, String authHeader);
 }

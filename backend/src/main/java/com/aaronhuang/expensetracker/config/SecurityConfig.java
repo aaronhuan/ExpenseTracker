@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,34 +24,17 @@ import java.util.Arrays;
 
 @Configuration
 public class SecurityConfig {
+    // private final UserDetailsService userDetailsService;
+    private final JwtFilter jwtFilter;
 
-    private final PasswordEncoder passwordEncoder;
-
-    private final UserDetailsService userDetailsService;
-
-    public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
+    public SecurityConfig(JwtFilter jwtFilter) {
+        // this.userDetailsService = userDetailsService;
+        this.jwtFilter = jwtFilter;
     }
-
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(12);
     }
-
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    //     http
-    //         .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
-    //         .csrf(csrf -> csrf.disable())  // Disable CSRF for API testing
-    //         .authorizeHttpRequests(auth -> auth
-    //             .anyRequest().permitAll()  // Allow all requests without authentication
-    //         )
-    //         .sessionManagement(session -> session
-    //             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-    //         );
-    //     return http.build();
-    // } for dev pre-jwt
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -58,20 +42,22 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
             .csrf(csrf->csrf.disable())
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/api/v1/users/register", "/api/v1/users/login")
-                .permitAll() //permit registration and login w/o authentication
+                .requestMatchers("/api/v1/users/register", "/api/v1/users/login").permitAll() // allow public access to these
+                .requestMatchers("/api/v1/users/**").hasRole("ADMIN") // restrict access to admin
+                .requestMatchers("/api/v1/incomes/**", "/api/v1/expenses/**", "/api/v1/categories/**").authenticated() // restrict access to authenticated users
                 .anyRequest().authenticated() //authenticate all other requests
             ) 
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            );
+            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);// all other constructors are deprecated
         // need to directlyprovide UserDetailsService
-        provider.setPasswordEncoder(passwordEncoder);
+        provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 

@@ -6,9 +6,9 @@ import com.aaronhuang.expensetracker.model.Expense;
 
 
 public interface ExpenseService {
-    Expense create(Expense e);
-    Optional<Expense> getById(Long id);
-    List<Expense> getAll();
-    Expense updateById(Long id, Expense e);
-    Expense deleteById(Long id);
+    Expense create(Expense e, String authHeader);
+    Optional<Expense> getById(Long id, String authHeader);
+    List<Expense> getAll(String authHeader);
+    Expense updateById(Long id, Expense e, String authHeader);
+    Expense deleteById(Long id, String authHeader);
 }

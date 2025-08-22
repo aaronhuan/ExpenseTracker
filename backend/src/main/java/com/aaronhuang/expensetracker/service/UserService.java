@@ -11,4 +11,5 @@ public interface UserService {
     List<User> getAll();
     User updateById(Long id, User u);
     User deleteById(Long id);
+    User getUserFromToken(String auth);
 }

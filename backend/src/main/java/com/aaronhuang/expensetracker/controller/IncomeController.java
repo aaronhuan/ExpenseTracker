@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 
 @RestController
@@ -30,32 +31,32 @@ public class IncomeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Income>> getAllIncomes() {
-        List<Income> incomes = iSvc.getAll();
+    public ResponseEntity<List<Income>> getAllIncomes(@RequestHeader("Authorization") String authHeader) {
+        List<Income> incomes = iSvc.getAll(authHeader);
         return ResponseEntity.ok(incomes);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Income> getIncomeById(@PathVariable Long id) {
-        Optional<Income> income = iSvc.getById(id);
+    public ResponseEntity<Income> getIncomeById(@PathVariable Long id, @RequestHeader("Authorization") String authHeader) {
+        Optional<Income> income = iSvc.getById(id, authHeader);
         return ResponseEntity.of(income);
     }
 
     @PostMapping
-    public ResponseEntity<Income> createIncome(@RequestBody @Valid Income income) {
-        Income created = iSvc.create(income);
+    public ResponseEntity<Income> createIncome(@RequestBody @Valid Income income, @RequestHeader("Authorization") String authHeader) {
+        Income created = iSvc.create(income, authHeader);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Income> updateIncome(@PathVariable Long id, @RequestBody @Valid Income income) {
-        Income updated = iSvc.updateById(id, income);
+    public ResponseEntity<Income> updateIncome(@PathVariable Long id, @RequestBody @Valid Income income, @RequestHeader("Authorization") String authHeader) {
+        Income updated = iSvc.updateById(id, income, authHeader);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Income> deleteIncome(@PathVariable Long id) {
-        iSvc.deleteById(id);
+    public ResponseEntity<Income> deleteIncome(@PathVariable Long id, @RequestHeader("Authorization") String authHeader) {
+        iSvc.deleteById(id, authHeader);
         return ResponseEntity.noContent().build();
     }
 

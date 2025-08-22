@@ -1,23 +1,52 @@
 package com.aaronhuang.expensetracker.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.authentication.AuthenticationProvider;
 
+import com.aaronhuang.expensetracker.dto.UserDto;
+import com.aaronhuang.expensetracker.dto.LoginRequest;
+import com.aaronhuang.expensetracker.dto.LoginResponse;
 import com.aaronhuang.expensetracker.model.User;
 import com.aaronhuang.expensetracker.repository.UserRepository;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService, UserDetailsService{
     private final UserRepository repo;
     private final PasswordEncoder passwordEncoder;
-    public UserServiceImpl(UserRepository repo, PasswordEncoder passwordEncoder){
+    private final JWTService jwtService;  
+    public UserServiceImpl(UserRepository repo, PasswordEncoder passwordEncoder,JWTService jwtService){
         this.repo=repo;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+    }
+
+
+    public LoginResponse verify(LoginRequest loginRequest) {
+        User user = repo.findByEmail(loginRequest.getEmail())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password"));
+        
+        // Manual password check instead of AuthenticationManager
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
+        }
+        
+        String token = jwtService.generateToken(user);
+        return new LoginResponse(token, new UserDto(user));
     }
 
     @Override
@@ -62,15 +91,18 @@ public class UserServiceImpl implements UserService{
         return existing;
     }
 
-    public boolean authenticateUser(String email, String rawPassword) {
-        Optional<User> userOpt = repo.findByEmail(email);
-        if (!userOpt.isPresent()) {
-            return false; // User not found
-        }
-
-        User user = userOpt.get();
-        // Check if the raw password matches the stored hashed password
-        return passwordEncoder.matches(rawPassword, user.getPassword());
-        
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repo.findByEmail(username)  // Using email as username
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
     }
+
+    public User getUserFromToken(String auth){
+        String token = auth.substring(7); 
+        String email = jwtService.extractUserEmail(token);
+        return repo.findByEmail(email)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token"));
+    }
+
+
 }

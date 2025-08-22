@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,33 +28,33 @@ public class ExpenseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Expense> getExpenseById(@PathVariable Long id){
-        Optional <Expense> expense = eSvc.getById(id);
+    public ResponseEntity<Expense> getExpenseById(@PathVariable Long id, @RequestHeader("Authorization") String authHeader){
+        Optional <Expense> expense = eSvc.getById(id, authHeader);
         return ResponseEntity.of(expense); 
     }
 
 
     @GetMapping
-    public ResponseEntity<List<Expense>> getAllExpenses(){
-        return ResponseEntity.ok(eSvc.getAll());
+    public ResponseEntity<List<Expense>> getAllExpenses(@RequestHeader("Authorization") String authHeader){
+        return ResponseEntity.ok(eSvc.getAll(authHeader));
     }
 
     @PostMapping
-    public ResponseEntity<Expense> createExpense(@RequestBody Expense e){
-        Expense created = eSvc.create(e);
+    public ResponseEntity<Expense> createExpense(@RequestBody Expense e, @RequestHeader("Authorization") String authHeader){
+        Expense created = eSvc.create(e, authHeader);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable Long id,@RequestBody Expense e){
-        Expense updated = eSvc.updateById(id, e);
+    public ResponseEntity<Expense> updateExpense(@PathVariable Long id,@RequestBody Expense e, @RequestHeader("Authorization") String authHeader){
+        Expense updated = eSvc.updateById(id, e, authHeader);
         return ResponseEntity.ok(updated);
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Expense> deleteExpense(@PathVariable Long id){
-        Expense deleted= eSvc.deleteById(id);
+    public ResponseEntity<Expense> deleteExpense(@PathVariable Long id, @RequestHeader("Authorization") String authHeader){
+        Expense deleted= eSvc.deleteById(id, authHeader);
         return ResponseEntity.ok(deleted);
     }
 
