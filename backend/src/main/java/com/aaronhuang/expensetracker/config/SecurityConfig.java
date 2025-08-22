@@ -42,7 +42,8 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
             .csrf(csrf->csrf.disable())
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/api/v1/users/register", "/api/v1/users/login", "/api/v1/**").permitAll() // allow public access to these
+                .requestMatchers("/api/v1/users/register", "/api/v1/users/login").permitAll() // allow public access to these
+                .requestMatchers("/api/v1/test/**").permitAll() 
                 .requestMatchers("/api/v1/users/**").hasRole("ADMIN") // restrict access to admin
                 .requestMatchers("/api/v1/incomes/**", "/api/v1/expenses/**", "/api/v1/categories/**").authenticated() // restrict access to authenticated users
                 .anyRequest().authenticated() //authenticate all other requests
