@@ -1,0 +1,18 @@
+# Maven build artifacts
+target/
+*.jar
+
+# Git and IDE clutter
+.git/
+.idea/
+.vscode/
+*.iml
+
+# Logs and temp files
+*.log
+*.tmp
+
+# OS files
+.DS_Store
+
+README.md
